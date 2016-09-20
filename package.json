@@ -1,0 +1,19 @@
+{
+  "name": "dbc-hack4dk",
+  "version": "0.1.0",
+  "description": "This is a sample client created for use during Hack4DK 2016. It uses a test version of the Open Platform as a datasource.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DBCDK/dbc-hack4dk-client.git"
+  },
+  "author": "DBC A/S",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/DBCDK/dbc-hack4dk-client/issues"
+  },
+  "homepage": "https://github.com/DBCDK/dbc-hack4dk-client#readme"
+}
