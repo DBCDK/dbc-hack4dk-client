@@ -1,5 +1,6 @@
 /**
- * @file: This is a sample client created for use during Hack4DK 2016. It uses a test version of the Open Platform as a datasource.
+ * @file: This is a sample client created for use during Hack4DK 2016.
+ * It uses a test version of the Open Platform as a datasource.
  */
 
 // Third party modules
@@ -10,15 +11,15 @@ const token = 'a4516e74f16b7b2d3f7f3eb6cac35b2b07575345'; // This token expires 
 const base = 'https://openplatform.dbc.dk/v1';
 
 // some default values
-const dFields = [];
+const dFields = null;
 const dPretty = true;
 const dPids = [];
 const dQ = '"unix"';
 const dOffset = 0;
 const dLimit = 10;
 const dSort = 'rank_frequency';
-const dAgencyIds = [];
-const dBranchIds = [];
+const dAgencyIds = null;
+const dBranchIds = null;
 const dLikes = [];
 const dDislikes = [];
 const dKnown = [];
@@ -32,13 +33,18 @@ const dDiscard = [];
  */
 function opr(url = '', req = {}) {
   return new Promise((resolve, reject) => {
+    const payload = {};
+    Object.keys(req).forEach(objectKey => {
+      const v = req[objectKey];
+      if (v || typeof v === typeof false) {
+        payload[objectKey] = v;
+      }
+    });
+
     request
-      .post(`${base}${url}`)
-      .send(req)
-      .set({
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json'
-      })
+      .post(`${base}${url}?access_token=${token}`)
+      // .set('Content-Type', 'application/json')
+      .send(payload)
       .end((err, res) => {
         if (err || !res.ok) {
           reject(err || !res.ok);
@@ -51,7 +57,7 @@ function opr(url = '', req = {}) {
 }
 
 /**
- *
+ * Gets one or more works from an array for Primary object Identifiers (Get these from search or recommend).
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {Array}pids
@@ -66,7 +72,7 @@ function work(fields = dFields, pretty = dPretty, pids = []) {
 }
 
 /**
- *
+ * Searches works based on CQL query.
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {String}q
@@ -87,7 +93,7 @@ function search(fields = dFields, pretty = dPretty, q = dQ, offset = dOffset, li
 }
 
 /**
- *
+ * Gets facets for a CQL query
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {String}q
@@ -104,7 +110,7 @@ function facets(fields = dFields, pretty = dPretty, q = dQ, limit = dLimit) {
 }
 
 /**
- *
+ * Gets a list of danish Libraries, reduces list by agency or branch ids.
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {Array}agencyIds
@@ -121,7 +127,7 @@ function libraries(fields = dFields, pretty = dPretty, agencyIds = dAgencyIds, b
 }
 
 /**
- *
+ * Ranks an array of pids based on recommender logic.
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param pids
@@ -132,7 +138,7 @@ function libraries(fields = dFields, pretty = dPretty, agencyIds = dAgencyIds, b
  * @param {Int}limit
  * @returns {Promise}
  */
-function rank(fields = dFields, pretty = dPretty, pids = dPids, recommender = dRecommender, like = dLikes, dislike = dDislikes, known = dKnown, limit = dLimit) {
+function rank(fields = dFields, pretty = dPretty, pids = dPids, recommender = 'default', like = dLikes, dislike = dDislikes, known = dKnown, limit = dLimit) {
   return opr('/rank', {
     fields,
     pretty,
@@ -145,7 +151,7 @@ function rank(fields = dFields, pretty = dPretty, pids = dPids, recommender = dR
 }
 
 /**
- *
+ * Recommends works based on likes or dislikes.
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {String}recommender
@@ -170,7 +176,7 @@ function recommend(fields = dFields, pretty = dPretty, like = dLikes, dislike = 
 }
 
 /**
- *
+ * Recommends works based on popular titles.
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {String}recommender
@@ -195,7 +201,7 @@ function popRecommend(fields = dFields, pretty = dPretty, like = dLikes, dislike
 }
 
 /**
- *
+ * Suggests libraries based on a query.
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {String}q
@@ -213,7 +219,7 @@ function librarySuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLim
 }
 
 /**
- *
+ * Suggests work titles based on a query.
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {String}q
@@ -231,7 +237,7 @@ function titleSuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLimit
 }
 
 /**
- *
+ * Suggests subjects based on a query.
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {String}q
@@ -249,7 +255,7 @@ function subjectSuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLim
 }
 
 /**
- *
+ * Suggests authors or creators based on a query.
  * @param {Array}fields
  * @param {Boolean}pretty
  * @param {String}q
@@ -267,15 +273,20 @@ function creatorSuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLim
 }
 
 // Export the available methods.
-module.exports = {
+const methods = module.exports = {
   work,
   search,
   facets,
   libraries,
   rank,
   recommend,
+  popRecommend,
   librarySuggest,
   titleSuggest,
   subjectSuggest,
   creatorSuggest
 };
+
+if (typeof window !== 'undefined') {
+  window.OpenPlatform = methods;
+}
