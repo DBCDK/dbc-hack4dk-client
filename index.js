@@ -12,7 +12,6 @@ const base = 'https://openplatform.dbc.dk/v1';
 
 // some default values
 const dFields = null;
-const dPretty = true;
 const dPids = [];
 const dQ = '"unix"';
 const dOffset = 0;
@@ -59,14 +58,12 @@ function opr(url = '', req = {}) {
 /**
  * Gets one or more works from an array for Primary object Identifiers (Get these from search or recommend).
  * @param {Array}fields
- * @param {Boolean}pretty
  * @param {Array}pids
  * @returns {Promise}
  */
-function work(fields = dFields, pretty = dPretty, pids = []) {
+function work(fields = dFields, pids = []) {
   return opr('/work', {
     fields,
-    pretty,
     pids
   });
 }
@@ -74,17 +71,15 @@ function work(fields = dFields, pretty = dPretty, pids = []) {
 /**
  * Searches works based on CQL query.
  * @param {Array}fields
- * @param {Boolean}pretty
  * @param {String}q
  * @param {Int}offset
  * @param {Int}limit
  * @param {String}sort
  * @returns {Promise}
  */
-function search(fields = dFields, pretty = dPretty, q = dQ, offset = dOffset, limit = dLimit, sort = dSort) {
+function search(fields = dFields, q = dQ, offset = dOffset, limit = dLimit, sort = dSort) {
   return opr('/search', {
     fields,
-    pretty,
     q,
     offset,
     limit,
@@ -95,15 +90,13 @@ function search(fields = dFields, pretty = dPretty, q = dQ, offset = dOffset, li
 /**
  * Gets facets for a CQL query
  * @param {Array}fields
- * @param {Boolean}pretty
  * @param {String}q
  * @param {Int}limit
  * @returns {Promise}
  */
-function facets(fields = dFields, pretty = dPretty, q = dQ, limit = dLimit) {
+function facets(fields = dFields, q = dQ, limit = dLimit) {
   return opr('/facets', {
     fields,
-    pretty,
     q,
     limit
   });
@@ -112,15 +105,13 @@ function facets(fields = dFields, pretty = dPretty, q = dQ, limit = dLimit) {
 /**
  * Gets a list of danish Libraries, reduces list by agency or branch ids.
  * @param {Array}fields
- * @param {Boolean}pretty
  * @param {Array}agencyIds
  * @param {Array}branchIds
  * @returns {Promise}
  */
-function libraries(fields = dFields, pretty = dPretty, agencyIds = dAgencyIds, branchIds = dBranchIds) {
+function libraries(fields = dFields, agencyIds = dAgencyIds, branchIds = dBranchIds) {
   return opr('/libraries', {
     fields,
-    pretty,
     agencyIds,
     branchIds
   });
@@ -129,8 +120,7 @@ function libraries(fields = dFields, pretty = dPretty, agencyIds = dAgencyIds, b
 /**
  * Ranks an array of pids based on recommender logic.
  * @param {Array}fields
- * @param {Boolean}pretty
- * @param pids
+ * @param {Array}pids
  * @param {String}recommender
  * @param {Array}like
  * @param {Array}dislike
@@ -138,10 +128,10 @@ function libraries(fields = dFields, pretty = dPretty, agencyIds = dAgencyIds, b
  * @param {Int}limit
  * @returns {Promise}
  */
-function rank(fields = dFields, pretty = dPretty, pids = dPids, recommender = 'default', like = dLikes, dislike = dDislikes, known = dKnown, limit = dLimit) {
+function rank(fields = dFields, pids = dPids, recommender = 'default', like = dLikes, dislike = dDislikes, known = dKnown, limit = dLimit) {
   return opr('/rank', {
     fields,
-    pretty,
+    pids,
     recommender,
     like,
     dislike,
@@ -153,8 +143,6 @@ function rank(fields = dFields, pretty = dPretty, pids = dPids, recommender = 'd
 /**
  * Recommends works based on likes or dislikes.
  * @param {Array}fields
- * @param {Boolean}pretty
- * @param {String}recommender
  * @param {Array}like
  * @param {Array}dislike
  * @param {Array}known
@@ -162,10 +150,9 @@ function rank(fields = dFields, pretty = dPretty, pids = dPids, recommender = 'd
  * @param {Int}limit
  * @returns {Promise}
  */
-function recommend(fields = dFields, pretty = dPretty, like = dLikes, dislike = dDislikes, known = dKnown, discard = dDiscard, limit = dLimit) {
+function recommend(fields = dFields, like = dLikes, dislike = dDislikes, known = dKnown, discard = dDiscard, limit = dLimit) {
   return opr('/recommend', {
     fields,
-    pretty,
     recommender: 'default',
     like,
     dislike,
@@ -178,8 +165,6 @@ function recommend(fields = dFields, pretty = dPretty, like = dLikes, dislike = 
 /**
  * Recommends works based on popular titles.
  * @param {Array}fields
- * @param {Boolean}pretty
- * @param {String}recommender
  * @param {Array}like
  * @param {Array}dislike
  * @param {Array}known
@@ -187,10 +172,9 @@ function recommend(fields = dFields, pretty = dPretty, like = dLikes, dislike = 
  * @param {Int}limit
  * @returns {Promise}
  */
-function popRecommend(fields = dFields, pretty = dPretty, like = dLikes, dislike = dDislikes, known = dKnown, discard = dDiscard, limit = dLimit) {
+function popRecommend(fields = dFields, like = dLikes, dislike = dDislikes, known = dKnown, discard = dDiscard, limit = dLimit) {
   return opr('/recommend', {
     fields,
-    pretty,
     recommender: 'popular',
     like,
     dislike,
@@ -203,15 +187,13 @@ function popRecommend(fields = dFields, pretty = dPretty, like = dLikes, dislike
 /**
  * Suggests libraries based on a query.
  * @param {Array}fields
- * @param {Boolean}pretty
  * @param {String}q
  * @param {Int}limit
  * @returns {Promise}
  */
-function librarySuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLimit) {
+function librarySuggest(fields = dFields, q = dQ, limit = dLimit) {
   return opr('/suggest', {
     fields,
-    pretty,
     q,
     limit,
     type: 'library'
@@ -221,15 +203,13 @@ function librarySuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLim
 /**
  * Suggests work titles based on a query.
  * @param {Array}fields
- * @param {Boolean}pretty
  * @param {String}q
  * @param {Int}limit
  * @returns {Promise}
  */
-function titleSuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLimit) {
+function titleSuggest(fields = dFields, q = dQ, limit = dLimit) {
   return opr('/suggest', {
     fields,
-    pretty,
     q,
     limit,
     type: 'title'
@@ -239,15 +219,13 @@ function titleSuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLimit
 /**
  * Suggests subjects based on a query.
  * @param {Array}fields
- * @param {Boolean}pretty
  * @param {String}q
  * @param {Int}limit
  * @returns {Promise}
  */
-function subjectSuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLimit) {
+function subjectSuggest(fields = dFields, q = dQ, limit = dLimit) {
   return opr('/suggest', {
     fields,
-    pretty,
     q,
     limit,
     type: 'subject'
@@ -257,15 +235,13 @@ function subjectSuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLim
 /**
  * Suggests authors or creators based on a query.
  * @param {Array}fields
- * @param {Boolean}pretty
  * @param {String}q
  * @param {Int}limit
  * @returns {Promise}
  */
-function creatorSuggest(fields = dFields, pretty = dPretty, q = dQ, limit = dLimit) {
+function creatorSuggest(fields = dFields, q = dQ, limit = dLimit) {
   return opr('/suggest', {
     fields,
-    pretty,
     q,
     limit,
     type: 'creator'
