@@ -1,6 +1,6 @@
 # dbc-hack4dk-client
 This is a client written for use during Hack4DK 2016.
-Don't forget to read the DBC readme for terms of use during Hack4DK 2016, you can find them here.
+Don't forget to read the [DBC readme](https://goo.gl/IFk605) for terms of use during Hack4DK 2016, you can find them here.
 
 ## Up and running
 This library has two approaches, either you can import it directly as a node js module, or you can include it in a script tag.
@@ -215,7 +215,7 @@ Example:
 ```javascript
 OpenPlatform.subjectSuggest(['term'], 'Harry').then(results => {
   results.data.forEach(subject => {
-    console.log(`${subject.term}`);
+    console.log(subject.term);
   });
 });
 ```
@@ -232,7 +232,7 @@ Example:
 ```javascript
 OpenPlatform.creatorSuggest(['term'], 'Harry').then(results => {
   results.data.forEach(creator => {
-    console.log(`${creator.term}`);
+    console.log(creator.term);
   });
 });
 ```
