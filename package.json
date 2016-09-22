@@ -1,6 +1,6 @@
 {
   "name": "dbc-hack4dk",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "This is a sample client created for use during Hack4DK 2016. It uses a test version of the Open Platform as a datasource.",
   "main": "index.js",
   "scripts": {
