@@ -3,9 +3,106 @@
 <head>
     <meta charset="UTF-8">
     <title>test page</title>
-    <script src="bin/dbc.hack4dk.bundle.js"></script>
+    <script src="https://s3-eu-west-1.amazonaws.com/hack4dk/dbc.hack4dk.bundle.js"></script>
 </head>
 <body>
     <h1>this is test page!</h1>
+    <div>It includes the test scripts</div>
 </body>
+
+<script>
+    // These are the examples from the readme.
+    // You can search.
+    OpenPlatform.search(null, 'Unix').then(results => {
+        results.data.forEach(material => {
+            console.log(material);
+        });
+    });
+
+    // You can get works
+    OpenPlatform.work(['pid', 'titleFull', 'extent'], ['870970-basis:04260864']).then(results => {
+        const upp = results.data[0];
+        console.log(upp);
+    });
+
+    // You can get facets
+    OpenPlatform.facets(null, 'Unix').then(results => {
+        const creators = results.data.creator;
+        console.log(creators);
+
+        const years = results.data.date;
+        console.log(years);
+
+        const form = results.data.form;
+        console.log(form);
+
+        const language = results.data.language;
+        console.log(language);
+
+        const subjects = results.data.subject;
+        console.log(subjects);
+    });
+
+    // You can get a list of libraries
+    OpenPlatform.libraries().then(results => {
+        const firstLibrary = results.data[0].agencyName;
+        console.log(firstLibrary);
+    });
+
+    // You can rank some titles
+    OpenPlatform.rank(
+            null, // Get default fields
+            ['870970-basis:07227752', '870970-basis:08005133', '870970-basis:04090977', '870970-basis:40547509'], // Pids to rank
+            'popular', // Use the pop recommender
+            ['870970-basis:41974745', '870970-basis:40547509'] // my likes
+    ).then(results => {
+        results.data.forEach(pid => console.log(pid));
+    });
+
+    // You can collect some recommendations
+    OpenPlatform.recommend(
+            null, // Get default fields
+            ['870970-basis:28290853', '870970-basis:52085330'] // my likes
+    ).then(results => {
+        results.data.forEach(briefWork => {
+            console.log(`${briefWork.pid}: ${briefWork.title}`);
+        });
+    });
+
+    // And even some popular titles
+    OpenPlatform.popRecommend(
+            null, // Get default fields
+            ['870970-basis:28290853', '870970-basis:52085330'] // my likes
+    ).then(results => {
+        results.data.forEach(briefWork => {
+            console.log(`${briefWork.pid}: ${briefWork.title}`);
+        });
+    });
+
+    // You can make suggestion
+    OpenPlatform.librarySuggest(['branchId', 'term'], 'Alberts').then(results => {
+        results.data.forEach(library => {
+            console.log(`${library.branchId}: ${library.term}`);
+        });
+    });
+
+    OpenPlatform.titleSuggest(['pid', 'term'], 'Harry').then(results => {
+        results.data.forEach(work => {
+            console.log(`${work.pid}: ${work.term}`);
+        });
+    });
+
+    OpenPlatform.subjectSuggest(['term'], 'Harry').then(results => {
+        results.data.forEach(subject => {
+            console.log(subject.term);
+        });
+    });
+
+    // Lots of suggestions
+    OpenPlatform.creatorSuggest(['term'], 'Harry').then(results => {
+        results.data.forEach(creator => {
+            console.log(creator.term);
+        });
+    });
+</script>
 </html>

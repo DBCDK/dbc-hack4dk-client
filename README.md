@@ -8,6 +8,7 @@ This library has two approaches, either you can import it directly as a node js 
 ### In the browser
 A browser bundle can be found in the bin folder of this repository, this module writes an object to window.OpenPlatform that includes all the supported methods.
 You can also find the bundled module via this URL: https://s3-eu-west-1.amazonaws.com/hack4dk/dbc.hack4dk.bundle.js
+If you opt for the last option, you can take a look at [testpage.html](https://github.com/DBCDK/dbc-hack4dk-client/blob/master/testpage.html) for inspiration.
 
 ### Via NPM
 You can get this module via npm, just run: `npm i --save dbc-hack4dk`
